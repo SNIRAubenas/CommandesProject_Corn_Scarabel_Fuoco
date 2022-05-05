@@ -45,13 +45,18 @@ namespace CommandesProject
             }
             //
             SQLiteCommand cmd;
-            cmd = new SQLiteCommand("SELECT id , nom , prenom FROM adresses" , sqlite_conn);
+            cmd = new SQLiteCommand("SELECT id , nom , prenom FROM client" , sqlite_conn);
             //
             DataTable extrait = new DataTable();
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
             adapter.Fill(extrait);
-            this.
+            this.grilleInfos.DataSource = extrait;
 
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
         }
     }
 }
