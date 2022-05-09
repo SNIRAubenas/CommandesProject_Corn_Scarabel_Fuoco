@@ -65,7 +65,7 @@ namespace CommandesProject
             this.grilleInfos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grilleInfos.Size = new System.Drawing.Size(359, 446);
             this.grilleInfos.TabIndex = 0;
-            this.grilleInfos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.grilleInfos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grilleInfos_CellClick);
             // 
             // infoBox
             // 
@@ -250,8 +250,10 @@ namespace CommandesProject
         #endregion
 
         private System.Windows.Forms.DataGridView grilleInfos;
-        private System.Windows.Forms.GroupBox infoBox;
         private System.Windows.Forms.DataGridView cmdGrid;
+        
+        private System.Windows.Forms.GroupBox infoBox;
+
         private System.Windows.Forms.Label firstNameLabel;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Label phoneNumberLabel;
@@ -260,6 +262,7 @@ namespace CommandesProject
         private System.Windows.Forms.Label postalCodeLabel;
         private System.Windows.Forms.Label cityLabel;
         private System.Windows.Forms.Label adressLabel;
+
         private System.Windows.Forms.TextBox firstNameBox;
         private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.TextBox phoneNumberBox;

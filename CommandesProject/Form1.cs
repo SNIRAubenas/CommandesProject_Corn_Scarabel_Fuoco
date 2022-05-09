@@ -14,7 +14,7 @@ namespace CommandesProject
 {
     public partial class Form1 : System.Windows.Forms.Form
     {
-        SQLiteConnection sqlite_conn;
+        SQLiteConnection bdd;
 
         public Form1()
         {
@@ -28,63 +28,84 @@ namespace CommandesProject
         {
             if (!File.Exists("CommandesProject.db"))
             {
-                MessageBox.Show("Le fichier CommandesProject.db est absent","Erreur",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Base de données absente.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
+                return;
             }
-            sqlite_conn = new SQLiteConnection("Data Source=CommandesProject.db ");
-
-            try
-            {
-                sqlite_conn.Open();
-
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Erreur à l'ouverture " + Environment.NewLine + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
+            SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
+            csb.DataSource = "CommandesProject.db";
             //
-            SQLiteCommand cmd;
-            cmd = new SQLiteCommand("SELECT id , nom , prenom FROM client" , sqlite_conn);
+            bdd = new SQLiteConnection(csb.ToString());
+            bdd.Open();
             //
-            DataTable extrait = new DataTable();
+            SQLiteCommand cmd = new SQLiteCommand("Select * From client", bdd);
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
-            adapter.Fill(extrait);
-            this.grilleInfos.DataSource = extrait;
+            //
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            //
+            this.grilleInfos.DataSource = table;
             this.grilleInfos.Columns[0].Visible = false;
-
+            this.grilleInfos.Columns[3].Visible = false;
+            this.grilleInfos.Columns[4].Visible = false;
+            this.grilleInfos.Columns[5].Visible = false;
+            this.grilleInfos.Columns[6].Visible = false;
+            this.grilleInfos.Columns[7].Visible = false;
+            this.grilleInfos.Columns[8].Visible = false;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+
+        private void grilleInfos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (!File.Exists("CommandesProject.db"))
+            DataGridView dgv = sender as DataGridView;
+
+            if (dgv == null)
+                return;
+            if (dgv.CurrentRow.Selected)
             {
-                MessageBox.Show("Le fichier CommandesProject.db est absent", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                int clientId = Convert.ToInt32(dgv.CurrentRow.Cells["id"].Value);
+                this.ShowCommandes(clientId);
             }
-            sqlite_conn = new SQLiteConnection("Data Source=CommandesProject.db ");
+
+
+            var ligne = this.grilleInfos.Rows[e.RowIndex];
+            var element = ligne.Cells["id"];
 
             try
             {
-                sqlite_conn.Open();
+                int id = (int)element.Value;
+                
+                SQLiteCommand cmd = new SQLiteCommand("Select * FROM client WHERE id=" + id.ToString(), bdd);
+                var dataReader = cmd.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    this.firstNameBox.Text = dataReader.GetString(dataReader.GetOrdinal("prenom"));
+                    this.nameBox.Text = dataReader.GetString(dataReader.GetOrdinal("nom"));
+                }
+            } catch { }
+        }
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erreur à l'ouverture " + Environment.NewLine + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
+        private void ShowCommandes(int clientId)
+        {
+            SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
+            csb.DataSource = "clients_commandes.db";
             //
-            SQLiteCommand cmd2;
-            cmd2 = new SQLiteCommand("SELECT id , nom , prenom FROM Commandes", sqlite_conn);
+            bdd = new SQLiteConnection(csb.ToString());
+            bdd.Open();
             //
-            DataTable extrait2 = new DataTable();
-            SQLiteDataAdapter adapter2 = new SQLiteDataAdapter(cmd2);
-            adapter2.Fill(extrait2);
-            this.cmdGrid.DataSource = extrait2;
-            this.cmdGrid.Columns[0].Visible = false;
-            this.cmdGrid.Columns[1].Visible = false;
+            SQLiteCommand cmd = new SQLiteCommand("Select * From Commandes WHERE id_client=@idclient", bdd);
+            cmd.Parameters.AddWithValue("@idclient", clientId);
 
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
+            //
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            
+            //
+            this.cmdGrid.DataSource = table;
+            this.cmdGrid.Columns["id"].Visible = false;
+            this.cmdGrid.Columns["id_client"].Visible = false;
         }
     }
 }
