@@ -95,7 +95,7 @@ namespace CommandesProject
             // 
             // phoneNumberLabel
             // 
-            this.phoneNumberLabel.Location = new System.Drawing.Point(137, 181);
+            this.phoneNumberLabel.Location = new System.Drawing.Point(264, 181);
             this.phoneNumberLabel.Name = "phoneNumberLabel";
             this.phoneNumberLabel.Size = new System.Drawing.Size(100, 15);
             this.phoneNumberLabel.TabIndex = 16;
@@ -149,7 +149,7 @@ namespace CommandesProject
             // 
             // phoneNumberBox
             // 
-            this.phoneNumberBox.Location = new System.Drawing.Point(137, 199);
+            this.phoneNumberBox.Location = new System.Drawing.Point(264, 199);
             this.phoneNumberBox.Name = "phoneNumberBox";
             this.phoneNumberBox.Size = new System.Drawing.Size(100, 20);
             this.phoneNumberBox.TabIndex = 10;
@@ -158,7 +158,7 @@ namespace CommandesProject
             // 
             this.EmailBox.Location = new System.Drawing.Point(7, 199);
             this.EmailBox.Name = "EmailBox";
-            this.EmailBox.Size = new System.Drawing.Size(100, 20);
+            this.EmailBox.Size = new System.Drawing.Size(230, 20);
             this.EmailBox.TabIndex = 9;
             // 
             // countryBox

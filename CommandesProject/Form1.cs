@@ -82,6 +82,12 @@ namespace CommandesProject
                 {
                     this.firstNameBox.Text = dataReader.GetString(dataReader.GetOrdinal("prenom"));
                     this.nameBox.Text = dataReader.GetString(dataReader.GetOrdinal("nom"));
+                    this.adresseBox.Text = GetStringValue(dataReader, "adresse");
+                    this.phoneNumberBox.Text = GetStringValue(dataReader, "numero");
+                    this.postalCodeBox.Text = GetStringValue(dataReader, "codepostal");
+                    this.cityBox.Text = GetStringValue(dataReader, "ville");
+                    this.countryBox.Text = GetStringValue(dataReader, "pays");
+                    this.EmailBox.Text = GetStringValue(dataReader, "email");
                 }
             } catch { }
         }
@@ -89,8 +95,8 @@ namespace CommandesProject
         private void ShowCommandes(int clientId)
         {
             SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
-            csb.DataSource = "Commandes.db";
-            //
+            csb.DataSource = "CommandesProject.db";
+            //  
             bdd = new SQLiteConnection(csb.ToString());
             bdd.Open();
             //
@@ -100,7 +106,7 @@ namespace CommandesProject
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
             //
             DataTable table = new DataTable();
-
+            
             adapter.Fill(table);
             
             //
@@ -108,5 +114,18 @@ namespace CommandesProject
             this.cmdGrid.Columns["id"].Visible = false;
             this.cmdGrid.Columns["idclient"].Visible = false;
         }
+
+        private string GetStringValue (SQLiteDataReader dataReader, string colonne)
+        {
+            string result = String.Empty;
+
+            if (!dataReader.IsDBNull(dataReader.GetOrdinal(colonne)))
+            {
+                result = dataReader.GetString(dataReader.GetOrdinal(colonne));
+            }
+
+
+            return result;
+        } 
     }
 }
