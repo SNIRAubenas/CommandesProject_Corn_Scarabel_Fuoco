@@ -74,7 +74,7 @@ namespace CommandesProject
 
             try
             {
-                int id = (int)element.Value;
+                long id = (long)element.Value;
                 
                 SQLiteCommand cmd = new SQLiteCommand("Select * FROM client WHERE id=" + id.ToString(), bdd);
                 var dataReader = cmd.ExecuteReader();
@@ -100,6 +100,7 @@ namespace CommandesProject
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
             //
             DataTable table = new DataTable();
+
             adapter.Fill(table);
             
             //
