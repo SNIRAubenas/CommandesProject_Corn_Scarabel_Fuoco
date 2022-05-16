@@ -89,12 +89,12 @@ namespace CommandesProject
         private void ShowCommandes(int clientId)
         {
             SQLiteConnectionStringBuilder csb = new SQLiteConnectionStringBuilder();
-            csb.DataSource = "clients_commandes.db";
+            csb.DataSource = "Commandes.db";
             //
             bdd = new SQLiteConnection(csb.ToString());
             bdd.Open();
             //
-            SQLiteCommand cmd = new SQLiteCommand("Select * From Commandes WHERE id_client=@idclient", bdd);
+            SQLiteCommand cmd = new SQLiteCommand("Select * From Commandes WHERE idclient=@idclient", bdd);
             cmd.Parameters.AddWithValue("@idclient", clientId);
 
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(cmd);
@@ -105,7 +105,7 @@ namespace CommandesProject
             //
             this.cmdGrid.DataSource = table;
             this.cmdGrid.Columns["id"].Visible = false;
-            this.cmdGrid.Columns["id_client"].Visible = false;
+            this.cmdGrid.Columns["idclient"].Visible = false;
         }
     }
 }
